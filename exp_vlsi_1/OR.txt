@@ -1,0 +1,65 @@
+-------------------------------------------------------------------------------
+-- File : ORgate.vhd
+-- Entity : ORgate
+-------------------------------------------------------------------------------
+-- Simulators : Mentor Graphics Modelsim OR Active HDL
+-- Synthesizers : Xilinx ISE
+-- Target Device : XC4000 Series
+-------------------------------------------------------------------------------
+-- Description : VHDL code to realize OR gate functionality
+-------------------------------------------------------------------------------
+--The IEEE standard 1164 package, declares std_logic, etc.
+library IEEE;
+use IEEE.std_logic_1164.all;
+use IEEE.std_logic_arith.all;
+use IEEE.std_logic_unsigned.all;
+---------------------------------- Entity Declarations -------------------------
+entity ORgate is
+Port( A : in std_logic;
+` B : in std_logic;
+ Y : out std_logic
+ );
+end ORgate;
+---------------------------------- Architecture -------------------------
+architecture Dataflow of ORgate is
+ begin
+Y<=A or B;
+ end Dataflow;
+
+
+
+
+
+-------------------------------------------------------------------------------
+-- File : ORgate.vhd
+-- Entity : ORgate
+-------------------------------------------------------------------------------
+-- Simulators : Mentor Graphics Modelsim OR Active HDL
+-- Synthesizers : Xilinx ISE
+-- Target Device : XC4000 Series
+-------------------------------------------------------------------------------
+-- Description : VHDL code to realize OR gate functionality
+-------------------------------------------------------------------------------
+--The IEEE standard 1164 package, declares std_logic, etc.
+library IEEE;
+use IEEE.std_logic_1164.all;
+use IEEE.std_logic_arith.all;
+use IEEE.std_logic_unsigned.all;
+---------------------------------- Entity Declarations -------------------------
+entity ORgate is
+Port( A : in std_logic;
+` B : in std_logic;
+ Y : out std_logic
+ );
+end ORgate;
+---------------------------------- Architecture -------------------------
+architecture Behavioral of ORgate is
+begin
+ process(A,B)
+ begin
+ if A='0' and B='0'
+ then Y<='0';
+ else Y<='1';
+ end if;
+ end process;
+end Behavioral;

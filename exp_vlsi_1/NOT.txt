@@ -1,0 +1,61 @@
+-------------------------------------------------------------------------------
+-- File : NOTgate.vhd
+-- Entity : NOTgate
+-------------------------------------------------------------------------------
+-- Simulators : Mentor Graphics Modelsim OR Active HDL
+-- Synthesizers : Xilinx ISE
+-- Target Device : XC4000 Series
+-------------------------------------------------------------------------------
+-- Description : VHDL code to realize NOT gate functionality
+-------------------------------------------------------------------------------
+--The IEEE standard 1164 package, declares std_logic, etc.
+library IEEE;
+use IEEE.std_logic_1164.all;
+use IEEE.std_logic_arith.all;
+use IEEE.std_logic_unsigned.all;
+---------------------------------- Entity Declarations -------------------------
+entity NOTgate is
+Port( A : in std_logic;
+ Y : out std_logic
+ );
+end NOTgate;
+---------------------------------- Architecture -------------------------
+architecture Dataflow of NOTgate is
+ begin
+Y<=NOT A;
+ end Dataflow;
+
+
+
+-------------------------------------------------------------------------------
+-- File : NOTgate.vhd
+-- Entity : NOTgate
+-------------------------------------------------------------------------------
+-- Simulators : Mentor Graphics Modelsim NOT Active HDL
+-- Synthesizers : Xilinx ISE
+-- Target Device : XC4000 Series
+-------------------------------------------------------------------------------
+-- Description : VHDL code to realize NOT gate functionality
+-------------------------------------------------------------------------------
+--The IEEE standard 1164 package, declares std_logic, etc.
+library IEEE;
+use IEEE.std_logic_1164.all;
+use IEEE.std_logic_arith.all;
+use IEEE.std_logic_unsigned.all;
+---------------------------------- Entity Declarations -------------------------
+entity NOTgate is
+Port( A : in std_logic;
+ Y : out std_logic
+ );
+end NOTgate;
+---------------------------------- Architecture -------------------------
+architecture Behavioral of NOTgate is
+begin
+ process(A)
+ begin
+ if A='0'
+ then Y<='1';
+ else Y<='0';
+ end if;
+ end process;
+end Behavioral;

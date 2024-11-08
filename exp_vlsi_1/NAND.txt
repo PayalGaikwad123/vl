@@ -1,0 +1,62 @@
+-------------------------------------------------------------------------------
+-- File : andgate.vhd
+-- Entity : NANDgate
+-------------------------------------------------------------------------------
+-- Simulators : Mentor Graphics Modelsim OR Active HDL
+-- Synthesizers : Xilinx ISE
+-- Target Device : XC4000 Series
+-------------------------------------------------------------------------------
+-- Description : VHDL code to realize NAND gate functionality
+-------------------------------------------------------------------------------
+--The IEEE standard 1164 package, declares std_logic, etc.
+library IEEE;
+use IEEE.std_logic_1164.all;
+use IEEE.std_logic_arith.all;
+use IEEE.std_logic_unsigned.all;
+---------------------------------- Entity Declarations -------------------------
+entity NANDgate is
+Port( A : in std_logic;
+` B : in std_logic;
+ Y : out std_logic
+ );
+end NANDgate;
+---------------------------------- Architecture -------------------------
+architecture Dataflow of NANDgate is
+begin
+Y<= A nand B; --Signal Assignment Statement
+end Dataflow;
+
+
+-------------------------------------------------------------------------------
+-- File : NANDgate.vhd
+-- Entity : NANDgate
+-------------------------------------------------------------------------------
+-- Simulators : Mentor Graphics Modelsim OR Active HDL
+-- Synthesizers : Xilinx ISE
+-- Target Device : XC4000 Series
+-------------------------------------------------------------------------------
+-- Description : VHDL code to realize AND gate functionality
+-------------------------------------------------------------------------------
+--The IEEE standard 1164 package, declares std_logic, etc.
+library IEEE;
+use IEEE.std_logic_1164.all;
+use IEEE.std_logic_arith.all;
+use IEEE.std_logic_unsigned.all;
+---------------------------------- Entity Declarations -------------------------
+entity NANDgate is
+Port( A : in std_logic;
+` B : in std_logic;
+ Y : out std_logic
+ );
+end NANDgate;
+---------------------------------- Architecture -------------------------
+architecture Behavioral of NANDgate is
+begin
+ process(A,B)
+ begin
+ if (A='1' and B='1')
+ then Y<='0';
+ else Y<='1';
+ end if;
+ end process;
+end Behavioral;
