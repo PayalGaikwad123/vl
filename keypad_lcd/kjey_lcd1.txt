@@ -1,0 +1,169 @@
+----------------------------------------------------------------------------------
+-- Company: 
+-- Engineer: 
+-- 
+-- Create Date:    13:07:05 05/28/2015 
+-- Design Name: 
+-- Module Name:    key_Lcd - Behavioral 
+-- Project Name: 
+-- Target Devices: 
+-- Tool versions: 
+-- Description: 
+--
+-- Dependencies: 
+--
+-- Revision: 
+-- Revision 0.01 - File Created
+-- Additional Comments: 
+--
+----------------------------------------------------------------------------------
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+
+-- Uncomment the following library declaration if using
+-- arithmetic functions with Signed or Unsigned values
+--use IEEE.NUMERIC_STD.ALL;
+
+-- Uncomment the following library declaration if instantiating
+-- any Xilinx primitives in this code.
+--library UNISIM;
+--use UNISIM.VComponents.all;
+
+entity key_Lcd is
+    Port ( clk : in  STD_LOGIC;
+           rst : in  STD_LOGIC;
+           RS : out  STD_LOGIC:='0';
+           EN : out  STD_LOGIC:='0';
+           RW : out  STD_LOGIC;
+           LCD : out  STD_LOGIC_VECTOR (7 downto 0);
+           ROW : inout  STD_LOGIC_VECTOR (3 downto 0);
+           COL : inout  STD_LOGIC_VECTOR (3 downto 0));
+end key_Lcd;
+
+architecture Behavioral of key_Lcd is
+SIGNAL rowtest : integer range 0 to 3:=0;
+constant N: integer:=15;
+SIGNAL data:STD_LOGIC_VECTOR (7 downto 0);
+SIGNAL Ldata:STD_LOGIC_VECTOR (7 downto 0);
+SIGNAL rowm:STD_LOGIC_VECTOR (3 downto 0);
+
+signal step: integer range 0 to 6:=0;
+signal i: integer range 0 to 16:=0;
+signal R_S,E_N,R_W : std_logic:='0';
+SIGNAL clock:STD_LOGIC;
+type arr is array (1 to N) of std_logic_vector(7 downto 0);
+constant datas : arr := (x"38",x"0E",x"06",x"01",x"80",--init command for 8 bit mode
+								 x"4B",x"45",x"59",x"20",x"50",x"52",x"45",x"53",x"53",x"3A"); --KEY PRESS:	
+begin
+
+process(rst,clk)
+variable temp: integer range 0 to 999999;
+begin	
+if(rst='0')then
+temp:=0;
+clock<='0';
+elsif(rising_edge(clk))then
+temp:=temp+1;
+if(temp =25000)then
+clock<= not clock;
+temp:=0;
+end if;
+end if;
+end process;
+
+
+Process(clock,rst,step,data)
+begin 
+	if(rst='0') then
+			R_W<='0';
+			E_N<='0';
+			R_S<='0';
+			Ldata <= x"00";
+			i<=0;
+	elsif(rising_edge(clock)) then
+			case step is
+				when 0=> 	R_W <= '0'; 
+								if(i<5) then			--init command upto 4 in array >> RS=0;
+								R_S<='0';
+								else R_S <= '1';		--for data string RS=1;
+								end if;
+								Ldata <= datas(i);	--send array element one by one
+								E_N <= '1';				--enable pulse
+								step<=1;
+				when 1=>		E_N <= '0';
+								i<=i+1;					--increament array pointer
+								step<=2;
+				when 2=>    if(i=16) then			--if i=16 indicate end of array element then go to step 3
+									step<=3;				--else go to step 1
+								else	step<=0;
+								end if;		
+				when 3 => 	Ldata <= x"8B";		--set lcd cursor location at 0x8b to print key preseed
+								R_S <= '0';
+								E_N <= '1';
+								step<=4;
+				when 4 => 	E_N <= '0';
+								step<=5;
+				when 5 => 	Ldata <= data;			--print key
+								R_S <= '1';				--rs=1 data mode
+								E_N <= '1';				--enable pulse
+								step<=6;
+				when 6 => 	E_N <= '0';				--repeat from step 3 to print new data like while(1) loop
+								step<=3;				
+			 end case;
+end if;
+end process;				
+
+---------------------------------------------------------------------------------
+--------Process for Keypad scan & Display----------------------------------------
+---------------------------------------------------------------------------------
+process(clock,rst)
+begin
+if (rst='0') then
+rowtest<=0;
+rowm<="1111";
+data<=x"FF";
+elsif rising_edge (clock) then
+	case rowtest is
+	when 0=>	 rowm<="0111";
+				case COL is	
+				  when "0111"=>data<= x"43";  -----------C 
+				  when "1011"=>data<= x"44";  -----------D
+				  when "1101"=>data<= x"45";  -----------E
+				  when "1110"=>data<= x"46";  -----------F
+				  when others=>rowtest<=1;
+				 end case;
+	when 1=>  rowm<="1011";
+				case COL is
+				  when "0111"=>data<= x"30";  -----------0  
+				  when "1011"=>data<= x"31";	-----------1
+				  when "1101"=>data<= x"32";  -----------2
+				  when "1110"=>data<= x"33";  -----------3
+				  when others=>rowtest<=2;
+				 end case;
+	when 2=>   rowm<="1101";
+				case COL is
+				  when "0111"=>data<= x"34";  -----------4  
+				  when "1011"=>data<= x"35";  -----------5 
+				  when "1101"=>data<= x"36";  -----------6 
+				  when "1110"=>data<= x"37";  -----------7
+				  when others=>rowtest<=3;
+				 end case;
+	when 3=>   rowm <="1110";
+				case COL is
+				  when "0111"=>data<= x"38";  -----------8 
+				  when "1011"=>data<= x"39";	-----------9 
+				  when "1101"=>data<= x"41";	-----------A 
+				  when "1110"=>data<= x"42";  -----------B
+				  when others=>rowtest<=0;
+				 end case;
+
+end case;
+end if;
+end process;
+ROW<=rowm;
+LCD<=Ldata;
+EN<=E_N;
+RW<=R_W;
+RS<=R_S;
+end Behavioral;
+

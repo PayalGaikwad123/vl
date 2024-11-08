@@ -1,0 +1,20 @@
+# clock pin for FPGA Board
+NET "clk" LOC = "P56"; # Bank = 0, Signal name = MCLK
+NET "rst" LOC = "P22"; # Bank = 2, Signal name = Reset
+NET "rst" CLOCK_DEDICATED_ROUTE = FALSE;
+
+# Pin Connected to LCD data 
+NET "LCD[0]" LOC = "P85"; 
+NET "LCD[1]" LOC = "P82"; 
+NET "LCD[2]" LOC = "P83"; 
+NET "LCD[3]" LOC = "P80"; 
+NET "LCD[4]" LOC = "P81"; 
+NET "LCD[5]" LOC = "P78"; 
+NET "LCD[6]" LOC = "P79"; 
+NET "LCD[7]" LOC = "P74"; 
+
+
+#Control line
+NET "RS" LOC = "P88"; 
+NET "EN" LOC = "P84"; 
+NET "RW" LOC = "P2"; 

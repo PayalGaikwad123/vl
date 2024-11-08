@@ -1,0 +1,8 @@
+NET "clk" LOC = P102 ; #SW21
+NET "rst" LOC = P105 ; #SW20
+NET "RS" LOC = P117  ; #LS1
+NET "EN" LOC = P118 ; #LS2
+NET "RW" LOC = P119 ; #LS3
+NET "LCD" LOC = P120 ; #LS4
+NET "ROW" LOC = P121 ; #Q2
+NET "COL" LOC = P122 ; #Q1

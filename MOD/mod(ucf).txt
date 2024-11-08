@@ -1,0 +1,10 @@
+NET "clk_in" CLOCK_DEDICATED_ROUTE = FALSE;
+
+net "clk_in" LOC = "P6";
+net "rst" LOC ="P58";
+net "En" LOC ="P64";
+net "LED<0>" LOC = "P2";
+net "LED<1>" LOC = "P142";
+net "LED<2>" LOC = "P138";
+net "LED<3>" LOC = "P134";
+net "LED<4>" LOC = "P124";
